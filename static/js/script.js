@@ -211,4 +211,20 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => flash.scrollIntoView({ behavior: "smooth", block: "center" }), 300);
     }
 
+    // Pre-select event from URL query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const eventParam = urlParams.get('event');
+    if (eventParam) {
+        const eventSelect = document.getElementById('event');
+        if (eventSelect) {
+            const targetValue = eventParam.toLowerCase().trim();
+            for (let option of eventSelect.options) {
+                if (option.value.toLowerCase().includes(targetValue) && targetValue !== "") {
+                    eventSelect.value = option.value;
+                    break;
+                }
+            }
+        }
+    }
+
 });

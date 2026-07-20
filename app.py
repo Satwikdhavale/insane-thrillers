@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, send_file, Response
+from werkzeug.middleware.proxy_fix import ProxyFix
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -6,13 +7,30 @@ import os
 import mimetypes
 import base64
 
+# Load environment variables from .env file if present
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
+
 app = Flask(__name__)
 
-app.secret_key = os.environ.get("SECRET_KEY", "insane-thrillers-secret-2025")
+# Apply ProxyFix middleware so scheme and HTTP headers are preserved behind reverse proxies (e.g. Render, Nginx, Cloudflare)
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
+
+# Secure Secret Key configuration
+secret_key = os.environ.get("SECRET_KEY")
+if not secret_key:
+    secret_key = "insane-thrillers-dev-key-change-in-production"
+    if os.environ.get("FLASK_DEBUG", "False").lower() not in ("true", "1", "t"):
+        print("[WARNING] SECRET_KEY environment variable is not set! Using fallback key.")
+app.secret_key = secret_key
 
 MAIL_USER = os.environ.get("MAIL_USER", "insanethrillers@gmail.com")
 MAIL_PASS = os.environ.get("MAIL_PASS", "")
-MAIL_TO   = "insanethrillers@gmail.com"
+MAIL_TO   = os.environ.get("MAIL_TO", "insanethrillers@gmail.com")
+
 
 
 # ══════════════════════════════════════════════════════════════
@@ -22,30 +40,31 @@ MAIL_TO   = "insanethrillers@gmail.com"
 #  Windows:  r"C:\Insane\filename.jpg"
 #  Mac/Linux: "/Users/name/Insane/filename.jpg"
 # ══════════════════════════════════════════════════════════════
+def _get_media_path(key, default_filename):
+    env_val = os.environ.get(f"MEDIA_{key.upper().replace('-', '_')}")
+    if env_val:
+        return env_val
+    return os.path.join(os.path.dirname(__file__), "media", default_filename)
+
 MEDIA_FILES = {
-
     # ── WESTERN GHATS ─────────────────────────────────────────
-    "wg-card":      r"C:\Insane\insane.thrillers-20260502-0005.jpg",  # events page card thumbnail
-    "wg-poster":    r"C:\Insane\insane.thrillers-20260502-0004.jpg",  # recap hero background
-
-    "wg-gallery-1": r"C:\Insane\insane.thrillers-20260502-0005.jpg",
-    "wg-gallery-2": r"C:\Insane\insane.thrillers-20260502-0006.jpg",
-    "wg-gallery-3": r"C:\Insane\insane.thrillers-20260502-0007.jpg",
-    "wg-gallery-4": r"C:\Insane\insane.thrillers-20260502-0008.jpg",
-
-    "wg-video":     r"C:\Insane\insane.thrillers-20260502-0001.mp4",
-    "wg-clip-1":    r"C:\Insane\insane.thrillers-20260502-0003.mp4",
-    "wg-clip-2":    r"C:\Insane\insane.thrillers-20260502-0004.mp4",
+    "wg-card":      _get_media_path("wg-card",      "https://res.cloudinary.com/moahwrg0/image/upload/v1784523984/insane.thrillers-20260502-0004_vujqeq.jpg"),
+    "wg-poster":    _get_media_path("wg-poster",    "https://res.cloudinary.com/moahwrg0/image/upload/v1784524050/insane.thrillers-20260502-0005_offg8z.jpg"),
+    "wg-gallery-1": _get_media_path("wg-gallery-1", "https://res.cloudinary.com/moahwrg0/image/upload/v1784524181/insane.thrillers-20260502-0007_eiam9e.jpg"),
+    "wg-gallery-2": _get_media_path("wg-gallery-2", "https://res.cloudinary.com/moahwrg0/image/upload/v1784524126/insane.thrillers-20260502-0006_zduszq.jpg"),
+    "wg-gallery-3": _get_media_path("wg-gallery-3", "https://res.cloudinary.com/moahwrg0/image/upload/v1784524226/insane.thrillers-20260502-0008_nzm9yy.jpg"),
+    "wg-gallery-4": _get_media_path("wg-gallery-4", "insane.thrillers-20260502-0008.jpg"),
+    "wg-video":     _get_media_path("wg-video",     "https://res.cloudinary.com/moahwrg0/video/upload/v1784524455/insane.thrillers-20260502-0004_bl8ru7.mp4"),
+    "wg-clip-1":    _get_media_path("wg-clip-1",    "https://res.cloudinary.com/moahwrg0/video/upload/v1784524504/insane.thrillers-20260502-0003_wwzxj7.mp4"),
+    "wg-clip-2":    _get_media_path("wg-clip-2",    "https://res.cloudinary.com/moahwrg0/video/upload/v1784525228/insane.thrillers-20260502-0005_pqaoan.mp4"),
 
     # ── KANDATI TRAILS ────────────────────────────────────────
-    "kt-card":      r"C:\Insane\insane.thrillers-20260502-0001.jpg",  # events page card thumbnail
-    "kt-poster":    r"C:\Insane\insane.thrillers-20260502-0003.jpg",  # recap hero background  ← CHANGE THIS to a different image if you have one
-
-    "kt-gallery-1": r"C:\Insane\insane.thrillers-20260502-0001.jpg",
-    "kt-gallery-2": r"C:\Insane\insane.thrillers-20260502-0002.jpg",
-
-    "kt-video":     r"C:\Insane\insane.thrillers-20260502-0005.mp4",
-    "kt-clip-1":    r"C:\Insane\insane.thrillers-20260502-0002.mp4",
+    "kt-card":      _get_media_path("kt-card",      "https://res.cloudinary.com/moahwrg0/image/upload/v1784525278/insane.thrillers-20260502-0001_hsscso.jpg"),
+    "kt-poster":    _get_media_path("kt-poster",    "https://res.cloudinary.com/moahwrg0/image/upload/v1784525280/insane.thrillers-20260502-0002_ovixai.jpg"),
+    "kt-gallery-1": _get_media_path("kt-gallery-1", "https://res.cloudinary.com/moahwrg0/image/upload/v1784525280/insane.thrillers-20260502-0003_bzevhy.jpg"),
+    "kt-gallery-2": _get_media_path("kt-gallery-2", "insane.thrillers-20260502-0002.jpg"),
+    "kt-video":     _get_media_path("kt-video",     "https://res.cloudinary.com/moahwrg0/video/upload/v1784525228/insane.thrillers-20260502-0005_pqaoan.mp4"),
+    "kt-clip-1":    _get_media_path("kt-clip-1",    "https://res.cloudinary.com/moahwrg0/video/upload/v1784525281/insane.thrillers-20260502-0002_tsqxji.mp4"),
 }
 
 
@@ -63,10 +82,17 @@ _BLANK_PNG = base64.b64decode(
 @app.route("/media/<key>")
 def serve_media(key):
     path = MEDIA_FILES.get(key)
-    ext  = os.path.splitext(path or "")[1].lower()
+    if not path:
+        return Response(_BLANK_PNG, mimetype="image/png")
+
+    # If path is an external URL, redirect directly
+    if path.startswith("http://") or path.startswith("https://"):
+        return redirect(path)
+
+    ext  = os.path.splitext(path)[1].lower()
 
     # Key missing or file not found
-    if not path or not os.path.isfile(path):
+    if not os.path.isfile(path):
         if ext in (".mp4", ".mov", ".webm"):
             return "Video not found", 404
         return Response(_BLANK_PNG, mimetype="image/png")
@@ -265,4 +291,6 @@ def _send_email(name, email, phone, event, message):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("FLASK_DEBUG", "False").lower() in ("true", "1", "t")
+    app.run(host="0.0.0.0", port=port, debug=debug)
