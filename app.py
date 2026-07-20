@@ -44,6 +44,8 @@ def _get_media_path(key, default_filename):
     env_val = os.environ.get(f"MEDIA_{key.upper().replace('-', '_')}")
     if env_val:
         return env_val
+    if default_filename.startswith("http://") or default_filename.startswith("https://"):
+        return default_filename
     return os.path.join(os.path.dirname(__file__), "media", default_filename)
 
 MEDIA_FILES = {
@@ -53,7 +55,7 @@ MEDIA_FILES = {
     "wg-gallery-1": _get_media_path("wg-gallery-1", "https://res.cloudinary.com/moahwrg0/image/upload/v1784524181/insane.thrillers-20260502-0007_eiam9e.jpg"),
     "wg-gallery-2": _get_media_path("wg-gallery-2", "https://res.cloudinary.com/moahwrg0/image/upload/v1784524126/insane.thrillers-20260502-0006_zduszq.jpg"),
     "wg-gallery-3": _get_media_path("wg-gallery-3", "https://res.cloudinary.com/moahwrg0/image/upload/v1784524226/insane.thrillers-20260502-0008_nzm9yy.jpg"),
-    "wg-gallery-4": _get_media_path("wg-gallery-4", "insane.thrillers-20260502-0008.jpg"),
+    "wg-gallery-4": _get_media_path("wg-gallery-4", "https://res.cloudinary.com/moahwrg0/image/upload/v1784524226/insane.thrillers-20260502-0008_nzm9yy.jpg"),
     "wg-video":     _get_media_path("wg-video",     "https://res.cloudinary.com/moahwrg0/video/upload/v1784524455/insane.thrillers-20260502-0004_bl8ru7.mp4"),
     "wg-clip-1":    _get_media_path("wg-clip-1",    "https://res.cloudinary.com/moahwrg0/video/upload/v1784524504/insane.thrillers-20260502-0003_wwzxj7.mp4"),
     "wg-clip-2":    _get_media_path("wg-clip-2",    "https://res.cloudinary.com/moahwrg0/video/upload/v1784525228/insane.thrillers-20260502-0005_pqaoan.mp4"),
@@ -62,7 +64,7 @@ MEDIA_FILES = {
     "kt-card":      _get_media_path("kt-card",      "https://res.cloudinary.com/moahwrg0/image/upload/v1784525278/insane.thrillers-20260502-0001_hsscso.jpg"),
     "kt-poster":    _get_media_path("kt-poster",    "https://res.cloudinary.com/moahwrg0/image/upload/v1784525280/insane.thrillers-20260502-0002_ovixai.jpg"),
     "kt-gallery-1": _get_media_path("kt-gallery-1", "https://res.cloudinary.com/moahwrg0/image/upload/v1784525280/insane.thrillers-20260502-0003_bzevhy.jpg"),
-    "kt-gallery-2": _get_media_path("kt-gallery-2", "insane.thrillers-20260502-0002.jpg"),
+    "kt-gallery-2": _get_media_path("kt-gallery-2", "https://res.cloudinary.com/moahwrg0/image/upload/v1784525280/insane.thrillers-20260502-0002_ovixai.jpg"),
     "kt-video":     _get_media_path("kt-video",     "https://res.cloudinary.com/moahwrg0/video/upload/v1784525228/insane.thrillers-20260502-0005_pqaoan.mp4"),
     "kt-clip-1":    _get_media_path("kt-clip-1",    "https://res.cloudinary.com/moahwrg0/video/upload/v1784525281/insane.thrillers-20260502-0002_tsqxji.mp4"),
 }
