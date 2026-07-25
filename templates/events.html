@@ -132,7 +132,11 @@
                     <h3 class="event-title">{{ event.title | upper }}</h3>
                     <p class="event-location">📍 {{ event.location }}</p>
                     <p class="event-desc">{{ event.desc }}</p>
+                    {% if event.form_url %}
+                    <a href="{{ event.form_url }}" target="_blank" rel="noopener" class="btn-register ghost">Register Now →</a>
+                    {% else %}
                     <a href="/contact?event={{ event.title | urlencode }}" class="btn-register ghost">Notify Me →</a>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
