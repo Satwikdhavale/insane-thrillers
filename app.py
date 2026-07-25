@@ -270,7 +270,7 @@ def contact():
 
         return redirect(url_for("contact"))
 
-    return render_template("contact.html")
+    return render_template("contact.html", upcoming_events=upcoming_events)
 
 
 def _send_email(name, email, phone, event, message):

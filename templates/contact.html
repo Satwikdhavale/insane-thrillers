@@ -167,6 +167,18 @@
                         Send Message →
                     </button>
                 </form>
+
+                {% if upcoming_events and upcoming_events[0].form_url %}
+                <div class="direct-register-container">
+                    <div class="register-divider">
+                        <span>OR</span>
+                    </div>
+                    <p class="register-promo-text">Ready to secure your slot directly?</p>
+                    <a href="{{ upcoming_events[0].form_url }}" target="_blank" rel="noopener" class="btn-primary large full-width direct-register-btn">
+                        Register via Google Form →
+                    </a>
+                </div>
+                {% endif %}
             </div>
 
         </div>
