@@ -213,6 +213,7 @@ upcoming_events = [
         "image":    "https://res.cloudinary.com/moahwrg0/image/upload/v1784996048/koyna_expiditions_qfwccl.png",
         "desc":     "Deep into the Koyna wildlife sanctuary and Sahyadri range — dense forests, mud bogs, and vertical drops that define legends.",
         "form_url": "https://docs.google.com/forms/d/e/1FAIpQLScgs2gcVFeg8vay8dbNHZbcwvGeCumFD9F9A2CvhBx_NR9Ixw/viewform?usp=dialog",
+        "countdown_date": "2026-08-15T09:00:00",
     },
 ]
 

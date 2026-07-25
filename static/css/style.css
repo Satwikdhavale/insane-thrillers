@@ -1980,3 +1980,295 @@ footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 48px 48px; }
     color: var(--black) !important;
     box-shadow: 0 0 30px rgba(230, 51, 41, 0.3);
 }
+
+/* ============================================================
+   COUNTDOWN TIMER
+   ============================================================ */
+.countdown-container {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.02);
+    border: 1px dashed rgba(255,255,255,0.06);
+    border-radius: 4px;
+}
+
+.countdown-label {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--red);
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(230, 51, 41, 0.2);
+}
+
+.countdown-timer {
+    display: flex;
+    gap: 16px;
+}
+
+.countdown-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(8, 8, 8, 0.6);
+    padding: 8px 12px;
+    min-width: 60px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.03);
+}
+
+.countdown-item span {
+    font-family: var(--font-display);
+    font-size: 28px;
+    color: var(--white);
+    line-height: 1;
+}
+
+.countdown-item label {
+    font-family: var(--font-ui);
+    font-size: 10px;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+}
+
+
+/* ============================================================
+   MAP SECTION
+   ============================================================ */
+.map-section {
+    padding: 100px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.map-header {
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.map-subtitle {
+    font-family: var(--font-body);
+    color: var(--light);
+    font-size: 15px;
+    margin-top: 12px;
+}
+
+.map-container-wrap {
+    background: var(--dark);
+    padding: 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.04);
+}
+
+#leaflet-map {
+    height: 550px;
+    width: 100%;
+    border-radius: 2px;
+    z-index: 10;
+}
+
+/* Customizing Leaflet styles to match Dark/Red theme */
+.leaflet-container {
+    background: #0c0c0c !important;
+}
+
+.leaflet-popup-content-wrapper {
+    background: #111 !important;
+    color: var(--white) !important;
+    border: 1px solid var(--red) !important;
+    border-radius: 4px !important;
+    box-shadow: 0 10px 30px rgba(8, 8, 8, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+    background: var(--red) !important;
+}
+
+.leaflet-popup-content h3 {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--red);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.leaflet-popup-content p {
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: var(--light);
+    line-height: 1.4;
+    margin: 0;
+}
+
+.leaflet-bar {
+    border: 1px solid rgba(255,255,255,0.1) !important;
+    box-shadow: none !important;
+}
+
+.leaflet-bar a {
+    background-color: var(--dark) !important;
+    color: var(--white) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.1) !important;
+    transition: background 0.2s, color 0.2s;
+}
+
+.leaflet-bar a:hover {
+    background-color: var(--red) !important;
+    color: var(--white) !important;
+}
+
+
+/* ============================================================
+   TESTIMONIALS (TRIBE TALK) SECTION
+   ============================================================ */
+.testimonials-section {
+    padding: 100px 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.testimonials-header {
+    margin-bottom: 60px;
+    text-align: center;
+}
+
+.testimonials-slider-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.testimonials-slider {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.testimonial-card {
+    min-width: 100%;
+    padding: 40px;
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,0.03);
+    border-radius: 4px;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+.testimonial-card:hover {
+    border-color: rgba(230,51,41,0.2);
+}
+
+.testimonial-text {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--white);
+    font-style: italic;
+    margin-bottom: 30px;
+    max-width: 650px;
+}
+
+.testimonial-rider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.rider-info {
+    text-align: center;
+}
+
+.rider-name {
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--white);
+}
+
+.rider-vehicle {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    color: var(--red);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+/* Slider Controls */
+.slider-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 32px;
+    padding: 0 24px;
+}
+
+.slider-btn {
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,0.06);
+    color: var(--light);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.slider-btn:hover {
+    background: var(--red);
+    color: var(--white);
+    border-color: var(--red);
+}
+
+.slider-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.slider-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.slider-dot.active {
+    background: var(--red);
+    transform: scale(1.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #leaflet-map {
+        height: 400px;
+    }
+    
+    .testimonial-card {
+        padding: 30px 20px;
+    }
+    
+    .testimonial-text {
+        font-size: 15px;
+        margin-bottom: 20px;
+    }
+}

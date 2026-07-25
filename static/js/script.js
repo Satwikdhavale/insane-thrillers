@@ -274,6 +274,178 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         }
-    });
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // 12. COUNTDOWN TIMER
+    // ─────────────────────────────────────────────────────────
+    const countdownEl = document.getElementById("countdown");
+    if (countdownEl) {
+        const targetStr = countdownEl.getAttribute("data-date");
+        const targetDate = new Date(targetStr).getTime();
+
+        const daysSpan = document.getElementById("days");
+        const hoursSpan = document.getElementById("hours");
+        const minutesSpan = document.getElementById("minutes");
+        const secondsSpan = document.getElementById("seconds");
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                countdownEl.innerHTML = "<div class='countdown-label' style='color:var(--mid);'>REGISTRATION CLOSED</div>";
+                return;
+            }
+
+            const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+            if (daysSpan) daysSpan.textContent = String(d).padStart(2, "0");
+            if (hoursSpan) hoursSpan.textContent = String(h).padStart(2, "0");
+            if (minutesSpan) minutesSpan.textContent = String(m).padStart(2, "0");
+            if (secondsSpan) secondsSpan.textContent = String(s).padStart(2, "0");
+        }
+
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // 13. LEAFLET DARK MAP
+    // ─────────────────────────────────────────────────────────
+    const mapEl = document.getElementById("leaflet-map");
+    if (mapEl && typeof L !== "undefined") {
+        const map = L.map("leaflet-map", {
+            scrollWheelZoom: false,
+            dragging: !L.Browser.mobile,
+            tap: !L.Browser.mobile
+        }).setView([17.715, 73.725], 11);
+
+        L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+
+        const checkpoints = [
+            {
+                coords: [17.653, 73.765],
+                title: "Koyna Base Camp",
+                desc: "Assembly point, mechanical inspection, and briefing zone."
+            },
+            {
+                coords: [17.695, 73.712],
+                title: "Deep River Crossing",
+                desc: "3.5ft water crossing challenge. Tow ropes and winches required."
+            },
+            {
+                coords: [17.722, 73.691],
+                title: "Extreme Mud Bogs",
+                desc: "Brutal clay slopes and deep ruts. Low-range 4L gearing zone."
+            },
+            {
+                coords: [17.749, 73.738],
+                title: "Ridge Camp",
+                desc: "Panoramic campsite overlooking the scenic Koyna backwaters."
+            }
+        ];
+
+        checkpoints.forEach(cp => {
+            const marker = L.circleMarker(cp.coords, {
+                radius: 8,
+                fillColor: "#E63329",
+                color: "#fff",
+                weight: 1.5,
+                opacity: 1,
+                fillOpacity: 0.95
+            }).addTo(map);
+
+            const popupContent = `
+                <div>
+                    <h3>${cp.title}</h3>
+                    <p>${cp.desc}</p>
+                </div>
+            `;
+            marker.bindPopup(popupContent);
+            
+            marker.on('mouseover', function () {
+                this.setStyle({ radius: 11, fillColor: "#fff", color: "#E63329" });
+            });
+            marker.on('mouseout', function () {
+                this.setStyle({ radius: 8, fillColor: "#E63329", color: "#fff" });
+            });
+        });
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // 14. TESTIMONIALS SLIDER
+    // ─────────────────────────────────────────────────────────
+    const slider = document.querySelector(".testimonials-slider");
+    const cards = document.querySelectorAll(".testimonial-card");
+    const prevBtn = document.querySelector(".prev-btn");
+    const nextBtn = document.querySelector(".next-btn");
+    const dots = document.querySelectorAll(".slider-dot");
+
+    if (slider && cards.length > 0) {
+        let currentIndex = 0;
+        let slideInterval;
+
+        function updateSlider() {
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            
+            cards.forEach((card, idx) => {
+                card.classList.toggle("active", idx === currentIndex);
+            });
+
+            dots.forEach((dot, idx) => {
+                dot.classList.toggle("active", idx === currentIndex);
+            });
+        }
+
+        function showNext() {
+            currentIndex = (currentIndex + 1) % cards.length;
+            updateSlider();
+        }
+
+        function showPrev() {
+            currentIndex = (currentIndex - 1 + cards.length) % cards.length;
+            updateSlider();
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener("click", () => {
+                showNext();
+                resetAutoplay();
+            });
+        }
+        if (prevBtn) {
+            prevBtn.addEventListener("click", () => {
+                showPrev();
+                resetAutoplay();
+            });
+        }
+
+        dots.forEach(dot => {
+            dot.addEventListener("click", (e) => {
+                currentIndex = parseInt(e.target.getAttribute("data-index"));
+                updateSlider();
+                resetAutoplay();
+            });
+        });
+
+        function startAutoplay() {
+            slideInterval = setInterval(showNext, 6000);
+        }
+
+        function resetAutoplay() {
+            clearInterval(slideInterval);
+            startAutoplay();
+        }
+
+        startAutoplay();
+    }
 
 });

@@ -33,6 +33,7 @@
     <link rel="apple-touch-icon"                  href="{{ url_for('static', filename='images/wheel.png') }}">
 
     <!-- Styles -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -172,6 +173,17 @@
                     <h3 class="event-title">{{ event.title | upper }}</h3>
                     <p class="event-location">📍 {{ event.location }}</p>
                     <p class="event-desc">{{ event.desc }}</p>
+                    {% if event.countdown_date %}
+                    <div class="countdown-container" id="countdown" data-date="{{ event.countdown_date }}">
+                        <div class="countdown-label">REGISTRATION CLOSES IN</div>
+                        <div class="countdown-timer">
+                            <div class="countdown-item"><span id="days">00</span><label>Days</label></div>
+                            <div class="countdown-item"><span id="hours">00</span><label>Hrs</label></div>
+                            <div class="countdown-item"><span id="minutes">00</span><label>Min</label></div>
+                            <div class="countdown-item"><span id="seconds">00</span><label>Sec</label></div>
+                        </div>
+                    </div>
+                    {% endif %}
                     <a href="/contact?event={{ event.title | urlencode }}" class="btn-register ghost">Register Now →</a>
                 </div>
             </div>
@@ -191,6 +203,71 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+    </section>
+
+    <!-- MAP SECTION -->
+    <section class="map-section" id="map">
+        <div class="map-header">
+            <div class="events-label">EXPLORE THE TERRAIN</div>
+            <h2 class="section-title">THE EXPEDITION <span class="accent">TRACKS</span></h2>
+            <p class="map-subtitle">Click map checkpoints to explore river crossings, camps, and safety points.</p>
+        </div>
+        <div class="map-container-wrap reveal">
+            <div id="leaflet-map"></div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS (TRIBE TALK) SECTION -->
+    <section class="testimonials-section" id="tribe-talk">
+        <div class="testimonials-header">
+            <div class="events-label">RIDER FEEDBACK</div>
+            <h2 class="section-title">TRIBE <span class="accent">TALK</span></h2>
+        </div>
+        <div class="testimonials-slider-container reveal">
+            <div class="testimonials-slider">
+                <div class="testimonial-card active">
+                    <p class="testimonial-text">"Kandati Trails was brutal but absolutely worth it. The overnight camp, the deep river crossing, and the recovery support were spot on. Can't wait for Koyna!"</p>
+                    <div class="testimonial-rider">
+                        <div class="rider-info">
+                            <h4 class="rider-name">Aditya Sen</h4>
+                            <span class="rider-vehicle">Mahindra Thar 4x4</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"Our Gypsy got stuck in 3ft of mud, but the recovery team pulled us out in minutes. This community is built on brotherhood and extreme adventure."</p>
+                    <div class="testimonial-rider">
+                        <div class="rider-info">
+                            <h4 class="rider-name">Rohan Mehta</h4>
+                            <span class="rider-vehicle">Maruti Gypsy King</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-text">"First-class navigation and walkie-talkie coordination. Cruised through the river crossing with my Hilux. Highly recommended offroad group!"</p>
+                    <div class="testimonial-rider">
+                        <div class="rider-info">
+                            <h4 class="rider-name">Vikram Singh</h4>
+                            <span class="rider-vehicle">Toyota Hilux 4x4</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="slider-controls">
+                <button class="slider-btn prev-btn" aria-label="Previous Slide">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+                </button>
+                <div class="slider-dots">
+                    <span class="slider-dot active" data-index="0"></span>
+                    <span class="slider-dot" data-index="1"></span>
+                    <span class="slider-dot" data-index="2"></span>
+                </div>
+                <button class="slider-btn next-btn" aria-label="Next Slide">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                </button>
+            </div>
         </div>
     </section>
 
@@ -278,6 +355,7 @@
         </div>
     </footer>
 
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
