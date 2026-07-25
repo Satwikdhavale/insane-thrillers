@@ -448,4 +448,38 @@ document.addEventListener("DOMContentLoaded", function () {
         startAutoplay();
     }
 
+    // ─────────────────────────────────────────────────────────
+    // 15. TESTIMONIAL SUBMISSION MODAL
+    // ─────────────────────────────────────────────────────────
+    const modal = document.getElementById("testimonialModal");
+    const openModalBtn = document.getElementById("openReviewModalBtn");
+    const closeModalBtn = document.getElementById("closeReviewModalBtn");
+
+    if (modal && openModalBtn && closeModalBtn) {
+        openModalBtn.addEventListener("click", () => {
+            modal.classList.add("active");
+        });
+
+        closeModalBtn.addEventListener("click", () => {
+            modal.classList.remove("active");
+        });
+
+        // Close when clicking outside the modal-box
+        modal.addEventListener("click", (e) => {
+            if (e.target === modal) {
+                modal.classList.remove("active");
+            }
+        });
+    }
+
+    // Auto-dismiss flash messages after 4.5 seconds
+    const flashMessages = document.querySelectorAll(".flash-msg");
+    flashMessages.forEach(msg => {
+        setTimeout(() => {
+            msg.style.transform = "translateX(50px)";
+            msg.style.opacity = "0";
+            setTimeout(() => msg.remove(), 400);
+        }, 4500);
+    });
+
 });

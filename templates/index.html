@@ -55,6 +55,16 @@
     <!-- PAGE TRANSITION WIPE -->
     <div id="page-transition"></div>
 
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages-container">
+                {% for category, message in messages %}
+                    <div class="flash-msg flash-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
     <!-- WHATSAPP FAB -->
     <a href="https://wa.me/919529621385?text=Hey%20Insane%20Thrillers!%20I%27m%20interested%20in%20joining%20an%20event."
        class="whatsapp-fab" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
@@ -268,8 +278,36 @@
                     <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
                 </button>
             </div>
+            
+            <div class="testimonial-actions">
+                <button class="btn-ghost" id="openReviewModalBtn">+ Add Your Review</button>
+            </div>
         </div>
     </section>
+
+    <!-- TESTIMONIAL SUBMISSION MODAL -->
+    <div id="testimonialModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="modal-close-btn" id="closeReviewModalBtn">&times;</button>
+            <h3 class="modal-title">SHARE YOUR <span class="accent">EXPERIENCE</span></h3>
+            <p class="modal-subtitle">Tell the tribe about your machine and the thrill of the trail.</p>
+            <form action="/submit-testimonial" method="POST" id="testimonialForm">
+                <div class="form-group font-ui">
+                    <label for="reviewName">Your Name</label>
+                    <input type="text" id="reviewName" name="name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group font-ui">
+                    <label for="reviewVehicle">Your Vehicle / Rig</label>
+                    <input type="text" id="reviewVehicle" name="vehicle" placeholder="Mahindra Thar / Maruti Gypsy / Bike" required>
+                </div>
+                <div class="form-group font-ui">
+                    <label for="reviewContent">Your Review / Experience</label>
+                    <textarea id="reviewContent" name="review" rows="4" placeholder="How was the track? Describe the mud, the climbs, the group vibe..." required></textarea>
+                </div>
+                <button type="submit" class="btn-primary large full-width" style="margin-top:16px;">Submit Testimonial →</button>
+            </form>
+        </div>
+    </div>
 
     <!-- FAQ -->
     <section class="faq-section" id="faq">

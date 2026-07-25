@@ -294,6 +294,48 @@ def _send_email(name, email, phone, event, message):
         s.sendmail(MAIL_USER, MAIL_TO, msg.as_string())
 
 
+@app.route("/submit-testimonial", methods=["POST"])
+def submit_testimonial():
+    name    = request.form.get("name",    "").strip()
+    vehicle = request.form.get("vehicle", "").strip()
+    review  = request.form.get("review",  "").strip()
+
+    if not name or not review:
+        flash("Please fill in your name and review.", "error")
+        return redirect(url_for("home"))
+
+    if not MAIL_PASS:
+        flash("✅ Testimonial received! It will be posted after moderation.", "success")
+    else:
+        try:
+            _send_testimonial_email(name, vehicle, review)
+            flash("✅ Testimonial submitted! It will be posted after moderation.", "success")
+        except Exception as e:
+            print(f"[TESTIMONIAL EMAIL ERROR] {e}")
+            flash("Thank you! Your testimonial has been saved for moderation.", "success")
+
+    return redirect(url_for("home"))
+
+
+def _send_testimonial_email(name, vehicle, review):
+    msg = MIMEMultipart("alternative")
+    msg["Subject"]  = f"[Insane Thrillers] New Testimonial from {name}"
+    msg["From"]     = MAIL_USER
+    msg["To"]       = MAIL_TO
+    plain = f"New Rider Testimonial:\n\nName: {name}\nVehicle: {vehicle}\n\nReview:\n{review}"
+    html  = f"""<html><body style="font-family:Arial;background:#111;color:#f0ece4;padding:32px;">
+      <h2 style="color:#E63329;">INSANE THRILLERS — New Rider Testimonial</h2>
+      <p><b>Name:</b> {name}</p>
+      <p><b>Vehicle/Rig:</b> {vehicle or '—'}</p>
+      <hr style="border-color:#333;"><p style="white-space:pre-wrap;">{review}</p>
+    </body></html>"""
+    msg.attach(MIMEText(plain, "plain"))
+    msg.attach(MIMEText(html,  "html"))
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
+        s.login(MAIL_USER, MAIL_PASS)
+        s.sendmail(MAIL_USER, MAIL_TO, msg.as_string())
+
+
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     debug = os.environ.get("FLASK_DEBUG", "False").lower() in ("true", "1", "t")

@@ -2272,3 +2272,176 @@ footer { border-top: 1px solid rgba(255,255,255,0.07); padding: 48px 48px; }
         margin-bottom: 20px;
     }
 }
+
+/* ============================================================
+   TESTIMONIAL SUBMISSION MODAL
+   ============================================================ */
+.testimonial-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 8, 8, 0.9);
+    backdrop-filter: blur(8px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-box {
+    background: var(--dark);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 40px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+.modal-overlay.active .modal-box {
+    transform: scale(1);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: var(--light);
+    font-size: 32px;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.modal-close-btn:hover {
+    color: var(--red);
+}
+
+.modal-title {
+    font-family: var(--font-display);
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 8px;
+}
+
+.modal-subtitle {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--light);
+    margin-bottom: 28px;
+    line-height: 1.4;
+}
+
+#testimonialForm {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+#testimonialForm .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#testimonialForm label {
+    font-family: var(--font-ui);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--light);
+}
+
+#testimonialForm input,
+#testimonialForm textarea {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 12px 16px;
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#testimonialForm input:focus,
+#testimonialForm textarea:focus {
+    outline: none;
+    border-color: var(--red);
+    box-shadow: 0 0 10px rgba(230, 51, 41, 0.15);
+}
+
+/* Floating Flash Messages Overlay */
+.flash-messages-container {
+    position: fixed;
+    top: 100px;
+    right: 32px;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 380px;
+    pointer-events: none;
+}
+
+.flash-msg {
+    pointer-events: auto;
+    padding: 16px 24px;
+    border-radius: 4px;
+    font-family: var(--font-ui);
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: flashSlideIn 0.4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.flash-msg.flash-success {
+    background: #111;
+    border-left: 4px solid var(--green-wa);
+    color: var(--white);
+}
+
+.flash-msg.flash-error {
+    background: #111;
+    border-left: 4px solid var(--red);
+    color: var(--white);
+}
+
+@keyframes flashSlideIn {
+    from { transform: translateX(50px); opacity: 0; }
+    to   { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+    .modal-box {
+        padding: 30px 20px;
+        width: 95%;
+    }
+    .flash-messages-container {
+        left: 16px;
+        right: 16px;
+        top: 80px;
+        max-width: none;
+    }
+}
