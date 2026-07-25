@@ -274,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
             });
         }
-    }
+    });
 
     // ─────────────────────────────────────────────────────────
     // 12. COUNTDOWN TIMER
