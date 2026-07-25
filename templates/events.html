@@ -121,7 +121,7 @@
             <div class="event-card reveal">
                 <div class="event-number">{{ "%02d" % loop.index }}</div>
                 <div class="event-image-wrap">
-                    <img src="{{ url_for('static', filename='images/' + event.image) }}" alt="{{ event.title }}">
+                    <img src="{% if event.image.startswith('http') %}{{ event.image }}{% else %}{{ url_for('static', filename='images/' + event.image) }}{% endif %}" alt="{{ event.title }}">
                     <div class="event-img-overlay"></div>
                 </div>
                 <div class="event-info">

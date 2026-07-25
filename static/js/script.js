@@ -65,6 +65,23 @@ document.addEventListener("DOMContentLoaded", function () {
         if (link.target === "_blank") return;
         if (href.startsWith("mailto:") || href.startsWith("tel:")) return;
 
+        // Skip transition and smooth scroll if it's a hash link pointing to the current page
+        try {
+            const linkUrl = new URL(link.href, window.location.href);
+            if (linkUrl.pathname === window.location.pathname && linkUrl.search === window.location.search && linkUrl.hash) {
+                link.addEventListener("click", function (e) {
+                    const target = document.querySelector(linkUrl.hash);
+                    if (target) {
+                        e.preventDefault();
+                        target.scrollIntoView({ behavior: "smooth" });
+                    }
+                });
+                return;
+            }
+        } catch (e) {
+            // fallback
+        }
+
         link.addEventListener("click", function (e) {
             e.preventDefault();
             navigateTo(href);

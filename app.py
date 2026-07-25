@@ -206,12 +206,12 @@ completed_events = [
 
 upcoming_events = [
     {
-        "slug":     "sahyadri-trails",
-        "title":    "Sahyadri Trails",
+        "slug":     "koyna-expeditions",
+        "title":    "Koyna Expeditions",
         "date":     "Coming Soon",
         "location": "Western Ghats",
-        "image":    "event2.jpg",
-        "desc":     "Deep into the Sahyadri range — dense forests, mud bogs, and vertical drops that define legends.",
+        "image":    "https://res.cloudinary.com/moahwrg0/image/upload/v1784996048/koyna_expiditions_qfwccl.png",
+        "desc":     "Deep into the Koyna wildlife sanctuary and Sahyadri range — dense forests, mud bogs, and vertical drops that define legends.",
     },
 ]
 
