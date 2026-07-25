@@ -35,7 +35,7 @@
     <div class="custom-cursor" id="cursor"></div>
 
     <header id="navbar">
-        <a href="/" class="nav-logo"><span class="logo-mark">⬡</span><span class="logo-text">INSANE THRILLERS</span></a>
+        <a href="/" class="nav-logo"><img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img" alt="Logo"><span class="logo-text">INSANE THRILLERS</span></a>
         <nav id="main-nav">
             <a href="/"        class="nav-link">Home</a>
             <a href="/events"  class="nav-link active">Events</a>
@@ -141,7 +141,7 @@
 
     <footer>
         <div class="footer-inner">
-            <div class="footer-logo"><span class="logo-mark">⬡</span><span>INSANE THRILLERS</span></div>
+            <div class="footer-logo"><img src="{{ url_for('static', filename='images/logo.png') }}" class="logo-img" alt="Logo"><span>INSANE THRILLERS</span></div>
             <div class="footer-links">
                 <a href="/">Home</a><a href="/events">Events</a><a href="/#about">About</a><a href="/contact">Contact</a>
             </div>
