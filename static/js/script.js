@@ -244,4 +244,36 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
+    // ─────────────────────────────────────────────────────────
+    // 11. FAQ ACCORDION INTERACTION
+    // ─────────────────────────────────────────────────────────
+    const faqItems = document.querySelectorAll(".faq-item");
+    faqItems.forEach(item => {
+        const trigger = item.querySelector(".faq-trigger");
+        const content = item.querySelector(".faq-content");
+        if (trigger && content) {
+            trigger.addEventListener("click", () => {
+                const isActive = item.classList.contains("active");
+
+                // Close all other items
+                faqItems.forEach(otherItem => {
+                    if (otherItem !== item) {
+                        otherItem.classList.remove("active");
+                        const otherContent = otherItem.querySelector(".faq-content");
+                        if (otherContent) otherContent.style.maxHeight = null;
+                    }
+                });
+
+                // Toggle current item
+                if (isActive) {
+                    item.classList.remove("active");
+                    content.style.maxHeight = null;
+                } else {
+                    item.classList.add("active");
+                    content.style.maxHeight = content.scrollHeight + "px";
+                }
+            });
+        }
+    });
+
 });
